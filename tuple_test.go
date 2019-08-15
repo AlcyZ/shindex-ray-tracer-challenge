@@ -58,11 +58,11 @@ func TestFunctionCompareTuplesComparesTwoTuplesForEquality(t *testing.T) {
 	tThree := Tuple{1, 1, 1, 1}
 	tFor := Tuple{1, 1, 0.99990, 1}
 
-	if !Equals(tOne, tTwo) {
+	if !TuplesEqual(tOne, tTwo) {
 		t.Errorf(EqualsTpl, tOne, tTwo)
 	}
 
-	if Equals(tThree, tFor) {
+	if TuplesEqual(tThree, tFor) {
 		t.Errorf(NotEqualsTpl, tThree, tFor)
 	}
 }
@@ -72,7 +72,7 @@ func TestAddingTwoTuples(t *testing.T) {
 	a2 := Vector(3, -2, 5)
 	expected := Tuple{1, 1, 6, 1}
 
-	if Add(a1, a2) != expected {
+	if AddTuples(a1, a2) != expected {
 		t.Error("Adding two tuples failed.")
 	}
 }
@@ -81,7 +81,7 @@ func TestSubtractingTwoPointsReturnsVector(t *testing.T) {
 	a := Point(3, 2, 1)
 	b := Point(5, 6, 7)
 	expected := Vector(-2, -4, -6)
-	actual := Subtract(a, b)
+	actual := SubtractTuples(a, b)
 
 	if expected != actual {
 		t.Errorf(EqualsTpl, expected, actual)
@@ -92,7 +92,7 @@ func TestSubtractingAVectorFromAPoint(t *testing.T) {
 	a := Point(3, 2, 1)
 	b := Vector(5, 6, 7)
 	expected := Point(-2, -4, -6)
-	actual := Subtract(a, b)
+	actual := SubtractTuples(a, b)
 
 	if expected != actual {
 		t.Errorf(EqualsTpl, expected, actual)
@@ -103,7 +103,7 @@ func TestSubtractingTwoVectors(t *testing.T) {
 	a := Vector(3, 2, 1)
 	b := Vector(5, 6, 7)
 	expected := Vector(-2, -4, -6)
-	actual := Subtract(a, b)
+	actual := SubtractTuples(a, b)
 
 	if expected != actual {
 		t.Errorf(EqualsTpl, expected, actual)
@@ -113,7 +113,7 @@ func TestSubtractingTwoVectors(t *testing.T) {
 func TestNegateTuple(t *testing.T) {
 	a := Vector(1, -2, 3)
 	expected := Vector(-1, 2, -3)
-	actual := Negate(a)
+	actual := NegateTuple(a)
 
 	if expected != actual {
 		t.Errorf("%v negated not equals %v (actual: %v)", a, expected, actual)
@@ -123,7 +123,7 @@ func TestNegateTuple(t *testing.T) {
 func TestMultiplyTuple(t *testing.T) {
 	a := Tuple{1, -2, 3, -4}
 	expected := Tuple{3.5, -7, 10.5, -14}
-	actual := Multiply(a, 3.5)
+	actual := MultiplyTuples(a, 3.5)
 
 	if expected != actual {
 		t.Errorf("%v multiplied by 3.5 not equals %v (actual: %v)", a, expected, actual)
@@ -133,7 +133,7 @@ func TestMultiplyTuple(t *testing.T) {
 func TestDivideTuple(t *testing.T) {
 	a := Tuple{1, -2, 3, -4}
 	expected := Tuple{0.5, -1, 1.5, -2}
-	actual := Divide(a, 2)
+	actual := DivideTuples(a, 2)
 
 	if expected != actual {
 		t.Errorf("%v divided by 2 not equals %v (actual: %v)", a, expected, actual)
@@ -155,7 +155,7 @@ func TestComputingMagnitude(t *testing.T) {
 	expected = append(expected, magnitudeDataSetHelper{Vector(-1, -2, -3), math.Sqrt(14)})
 
 	for _, dataSet := range expected {
-		actual := Magnitude(dataSet.v)
+		actual := TupleMagnitude(dataSet.v)
 		expected := dataSet.e
 
 		if expected != actual {
@@ -172,8 +172,8 @@ func TestNormalizingTuplesReturnsUnitVector(t *testing.T) {
 	data = append(data, Vector(1, 2, 3))
 
 	for _, vector := range data {
-		normalized := Normalize(vector)
-		actual := Magnitude(normalized)
+		normalized := NormalizeTuples(vector)
+		actual := TupleMagnitude(normalized)
 
 		if actual != 1 {
 			t.Errorf("Normalized vector have not magnitude of 1 (actual: %v).", actual)
@@ -184,10 +184,10 @@ func TestNormalizingTuplesReturnsUnitVector(t *testing.T) {
 func TestDotProductsOfTwoTuples(t *testing.T) {
 	a := Vector(1, 2, 3)
 	b := Vector(2, 3, 4)
-	actual := Dot(a, b)
+	actual := TupleDot(a, b)
 
 	if actual != 20 {
-		t.Errorf("Dot product of two touples is not expected 20 (actual: %v)\n%v\n%v", actual, a, b)
+		t.Errorf("TupleDot product of two touples is not expected 20 (actual: %v)\n%v\n%v", actual, a, b)
 	}
 }
 
@@ -198,11 +198,11 @@ func TestCrossProductOfTwoVectors(t *testing.T) {
 	expAB := Vector(-1, 2, -1)
 	expBA := Vector(1, -2, 1)
 
-	if Cross(a, b) != expAB {
-		t.Errorf("Cross product of two vectors are not as expected.")
+	if TupleCross(a, b) != expAB {
+		t.Errorf("TupleCross product of two vectors are not as expected.")
 	}
 
-	if Cross(b, a) != expBA {
-		t.Errorf("Cross product of two vectors are not as expected.")
+	if TupleCross(b, a) != expBA {
+		t.Errorf("TupleCross product of two vectors are not as expected.")
 	}
 }

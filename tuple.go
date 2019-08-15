@@ -8,7 +8,7 @@ type Tuple [4]float64
 
 // arithmetic operations for tuple
 
-func Add(a Tuple, b Tuple) Tuple {
+func AddTuples(a Tuple, b Tuple) Tuple {
 	return Tuple{
 		a[0] + b[0],
 		a[1] + b[1],
@@ -17,7 +17,7 @@ func Add(a Tuple, b Tuple) Tuple {
 	}
 }
 
-func Subtract(a Tuple, b Tuple) Tuple {
+func SubtractTuples(a Tuple, b Tuple) Tuple {
 	return Tuple{
 		a[0] - b[0],
 		a[1] - b[1],
@@ -26,7 +26,7 @@ func Subtract(a Tuple, b Tuple) Tuple {
 	}
 }
 
-func Multiply(t Tuple, x float64) Tuple {
+func MultiplyTuples(t Tuple, x float64) Tuple {
 	return Tuple{
 		t[0] * x,
 		t[1] * x,
@@ -35,7 +35,7 @@ func Multiply(t Tuple, x float64) Tuple {
 	}
 }
 
-func Divide(t Tuple, x float64) Tuple {
+func DivideTuples(t Tuple, x float64) Tuple {
 	return Tuple{
 		t[0] / x,
 		t[1] / x,
@@ -44,29 +44,29 @@ func Divide(t Tuple, x float64) Tuple {
 	}
 }
 
-func Normalize(t Tuple) Tuple {
+func NormalizeTuples(t Tuple) Tuple {
 	return Tuple{
-		t[0] / Magnitude(t),
-		t[1] / Magnitude(t),
-		t[2] / Magnitude(t),
-		t[3] / Magnitude(t),
+		t[0] / TupleMagnitude(t),
+		t[1] / TupleMagnitude(t),
+		t[2] / TupleMagnitude(t),
+		t[3] / TupleMagnitude(t),
 	}
 }
 
-func Magnitude(t Tuple) float64 {
+func TupleMagnitude(t Tuple) float64 {
 	pow := math.Pow(t[0], 2) + math.Pow(t[1], 2) + math.Pow(t[2], 2) + math.Pow(t[3], 2)
 
 	return math.Sqrt(pow)
 }
 
-func Dot(a Tuple, b Tuple) float64 {
+func TupleDot(a Tuple, b Tuple) float64 {
 	return a[0]*b[0] +
 		a[1]*b[1] +
 		a[2]*b[2] +
 		a[3]*b[3]
 }
 
-func Cross(a Tuple, b Tuple) Tuple {
+func TupleCross(a Tuple, b Tuple) Tuple {
 	x := a[1]*b[2] - a[2]*b[1]
 	y := a[2]*b[0] - a[0]*b[2]
 	z := a[0]*b[1] - a[1]*b[0]
@@ -74,10 +74,10 @@ func Cross(a Tuple, b Tuple) Tuple {
 	return Vector(x, y, z)
 }
 
-func Negate(t Tuple) Tuple {
+func NegateTuple(t Tuple) Tuple {
 	zero := Tuple{0, 0, 0, 0}
 
-	return Subtract(zero, t)
+	return SubtractTuples(zero, t)
 }
 
 // equality checks
@@ -86,7 +86,7 @@ func floatEquals(a float64, b float64) bool {
 	return math.Abs(a-b) < EPSILON
 }
 
-func Equals(tA Tuple, tB Tuple) bool {
+func TuplesEqual(tA Tuple, tB Tuple) bool {
 	return floatEquals(tA[0], tB[0]) && floatEquals(tA[1], tB[1]) && floatEquals(tA[2], tB[2]) && tA[3] == tB[3]
 }
 
