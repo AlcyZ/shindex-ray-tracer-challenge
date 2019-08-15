@@ -1,4 +1,4 @@
-package shindex_ray_tracer_challenge
+package main
 
 import "math"
 
@@ -8,25 +8,25 @@ type Tuple [4]float64
 
 // arithmetic operations for tuple
 
-func (t *Tuple) Add(other Tuple) Tuple {
+func Add(a Tuple, b Tuple) Tuple {
 	return Tuple{
-		t[0] + other[0],
-		t[1] + other[1],
-		t[2] + other[2],
-		t[3] + other[3],
+		a[0] + b[0],
+		a[1] + b[1],
+		a[2] + b[2],
+		a[3] + b[3],
 	}
 }
 
-func (t *Tuple) Subtract(other Tuple) Tuple {
+func Subtract(a Tuple, b Tuple) Tuple {
 	return Tuple{
-		t[0] - other[0],
-		t[1] - other[1],
-		t[2] - other[2],
-		t[3] - other[3],
+		a[0] - b[0],
+		a[1] - b[1],
+		a[2] - b[2],
+		a[3] - b[3],
 	}
 }
 
-func (t *Tuple) Multiply(x float64) Tuple {
+func Multiply(t Tuple, x float64) Tuple {
 	return Tuple{
 		t[0] * x,
 		t[1] * x,
@@ -35,7 +35,7 @@ func (t *Tuple) Multiply(x float64) Tuple {
 	}
 }
 
-func (t *Tuple) Divide(x float64) Tuple {
+func Divide(t Tuple, x float64) Tuple {
 	return Tuple{
 		t[0] / x,
 		t[1] / x,
@@ -44,31 +44,40 @@ func (t *Tuple) Divide(x float64) Tuple {
 	}
 }
 
-func (t *Tuple) Normalize () Tuple {
+func Normalize(t Tuple) Tuple {
 	return Tuple{
-		t[0] / t.Magnitude(),
-		t[1] / t.Magnitude(),
-		t[2] / t.Magnitude(),
-		t[3] / t.Magnitude(),
+		t[0] / Magnitude(t),
+		t[1] / Magnitude(t),
+		t[2] / Magnitude(t),
+		t[3] / Magnitude(t),
 	}
 }
 
-func (t *Tuple) Magnitude() float64 {
+func Magnitude(t Tuple) float64 {
 	pow := math.Pow(t[0], 2) + math.Pow(t[1], 2) + math.Pow(t[2], 2) + math.Pow(t[3], 2)
 
 	return math.Sqrt(pow)
 }
 
-func (t *Tuple) Negate() Tuple {
-	zero := Tuple{0, 0, 0, 0}
-
-	return zero.Subtract(*t)
+func Dot(a Tuple, b Tuple) float64 {
+	return a[0]*b[0] +
+		a[1]*b[1] +
+		a[2]*b[2] +
+		a[3]*b[3]
 }
 
-func NegateTuple(t Tuple) Tuple {
+func Cross(a Tuple, b Tuple) Tuple {
+	x := a[1]*b[2] - a[2]*b[1]
+	y := a[2]*b[0] - a[0]*b[2]
+	z := a[0]*b[1] - a[1]*b[0]
+
+	return Vector(x, y, z)
+}
+
+func Negate(t Tuple) Tuple {
 	zero := Tuple{0, 0, 0, 0}
 
-	return zero.Subtract(t)
+	return Subtract(zero, t)
 }
 
 // equality checks
@@ -77,7 +86,7 @@ func floatEquals(a float64, b float64) bool {
 	return math.Abs(a-b) < EPSILON
 }
 
-func TupleEquals(tA Tuple, tB Tuple) bool {
+func Equals(tA Tuple, tB Tuple) bool {
 	return floatEquals(tA[0], tB[0]) && floatEquals(tA[1], tB[1]) && floatEquals(tA[2], tB[2]) && tA[3] == tB[3]
 }
 
