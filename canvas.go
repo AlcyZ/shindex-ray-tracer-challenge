@@ -2,8 +2,9 @@ package main
 
 import (
 	"strconv"
-	"strings"
 )
+
+const Nl string = "\n"
 
 type Canvas struct {
 	Width  int
@@ -39,15 +40,13 @@ func NewCanvas(width int, height int) Canvas {
 }
 
 func CanvasToPPM(c Canvas) string {
-	lines := make([]string, 3 + c.Height)
+	return ppmHeaderLines(c)
+}
 
-	lines[0] = "P3"
-	lines[1] = strconv.Itoa(c.Width) + " " + strconv.Itoa(c.Height)
-	lines[2] = "255"
+func ppmHeaderLines(c Canvas) string {
+	first := "P3"
+	second := strconv.Itoa(c.Width) + " " + strconv.Itoa(c.Height)
+	third := "255"
 
-	//for i := 0; i < c.Height; i++ {
-	//	line := make([]string, c.Width)
-	//}
-
-	return strings.Join(lines, "\n")
+	return first + Nl + second + Nl + third
 }
