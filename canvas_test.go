@@ -77,13 +77,56 @@ func TestConstructingThePPMPixelData(t *testing.T) {
 	expected := []string{l1, l2, l3}
 	actual := strings.Split(ppm, "\n")
 
-	if expected[0] != actual [3] {
-		t.Errorf("Fourth line is wrong, %v, %v", expected[0], actual[3])
+	if expected[0] != actual[3] {
+		t.Errorf("Fourth line is wrong:\nexpected:\t%v\nactual:\t\t%v", expected[0], actual[3])
 	}
-	if expected[1] != actual [4] {
-		t.Errorf("Fifth line is wrong, %v, %v", expected[1], actual[4])
+	if expected[1] != actual[4] {
+		t.Errorf("Fifth line is wrong:\nexpected:\t%v\nactual:\t\t%v", expected[1], actual[4])
 	}
-	if expected[2] != actual [5] {
-		t.Errorf("Sixth line is wrong, %v, %v", expected[2], actual[5])
+	if expected[2] != actual[5] {
+		t.Errorf("Sixth line is wrong:\nexpected:\t%v\nactual:\t\t%v", expected[2], actual[5])
+	}
+}
+
+func TestSplittingLongLinesInPPMFiles (t *testing.T) {
+	c := NewCanvas(10, 2)
+	col := Color{1, 0.8, 0.6}
+
+	for y := 0; y < c.Height; y++ {
+		for x := 0; x < c.Width; x++ {
+			c.WritePixel(x, y, col)
+		}
+	}
+
+	ppm := CanvasToPPM(c)
+
+	l1 := "255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204"
+	l2 := "153 255 204 153 255 204 153 255 204 153 255 204 153"
+	l3 := "255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204"
+	l4 := "153 255 204 153 255 204 153 255 204 153 255 204 153"
+
+	expected := []string{l1, l2, l3, l4}
+	actual := strings.Split(ppm, "\n")
+
+	if expected[0] != actual[3] {
+		t.Errorf("Fourth line is wrong:\nexpected:\t%v\nactual:\t\t%v", expected[0], actual[3])
+	}
+	if expected[1] != actual[4] {
+		t.Errorf("Fifth line is wrong:\nexpected:\t%v\nactual:\t\t%v", expected[1], actual[4])
+	}
+	if expected[2] != actual[5] {
+		t.Errorf("Sixth line is wrong:\nexpected:\t%v\nactual:\t\t%v", expected[2], actual[5])
+	}
+	if expected[3] != actual[6] {
+		t.Errorf("Sevent line is wrong:\nexpected:\t%v\nactual:\t\t%v", expected[2], actual[5])
+	}
+}
+
+func TestPPMFilesAreTerminatedByNewLine (t *testing.T) {
+	c := NewCanvas(5, 3)
+	ppm := CanvasToPPM(c)
+
+	if !strings.HasSuffix(ppm, "\n") {
+		t.Fail()
 	}
 }
