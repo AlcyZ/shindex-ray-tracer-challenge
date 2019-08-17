@@ -22,6 +22,13 @@ func (c *Canvas) PixelAt(x int, y int) Color {
 }
 
 func (c *Canvas) WritePixel(x int, y int, color Color) {
+	if len(c.pixels)-1 < x || x < 0 {
+		return
+	}
+	if len(c.pixels[x])-1 < y || y < 0 {
+		return
+	}
+
 	c.pixels[x][y] = color
 }
 
@@ -83,7 +90,7 @@ func CanvasToPPM(c Canvas) string {
 				line = line + b + Ws
 			}
 		}
-		data = strings.TrimRight(data + line, Ws) + "\n"
+		data = strings.TrimRight(data+line, Ws) + "\n"
 	}
 
 	return hl + Nl + data
@@ -97,18 +104,6 @@ func normRgb(val int, min int, max int) int {
 		val = 0
 	}
 	return val
-}
-
-func normLine(line string, color int) string {
-	col := strconv.Itoa(color)
-	newLine := line + col
-
-	//fmt.Printf("%v\n\n", newLine)
-	if len(newLine) > 70 {
-		return line + Nl + col + Ws
-	}
-
-	return newLine + Ws
 }
 
 func ppmHeaderLines(c Canvas) string {
